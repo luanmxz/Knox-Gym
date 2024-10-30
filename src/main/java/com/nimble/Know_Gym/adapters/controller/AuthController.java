@@ -1,5 +1,7 @@
 package com.nimble.Know_Gym.adapters.controller;
 
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.representations.idm.RealmRepresentation;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.nimble.Know_Gym.adapters.dto.request.LoginRequest;
+import com.nimble.Know_Gym.adapters.dto.request.TestRequest;
+import com.nimble.Know_Gym.application.usecase.KeyCloakUseCase;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -25,6 +29,11 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class AuthController {
 
     private final Dotenv env = Dotenv.load();
+    private final KeyCloakUseCase keyCloakUseCase;
+
+    public AuthController(KeyCloakUseCase keyCloakUseCase) {
+        this.keyCloakUseCase = keyCloakUseCase;
+    }
 
     @GetMapping("/")
     public String index(@AuthenticationPrincipal Jwt jwt) {
@@ -55,7 +64,15 @@ public class AuthController {
 
     @GetMapping("/protected/premium")
     @PreAuthorize("hasAuthority ('USER_PREMIUM')")
-    public String premium(@AuthenticationPrincipal Jwt jwt) {
+    public String premium(@AuthenticationPrincipal Jwt jwt, @RequestBody TestRequest request) {
+
+        System.out.println("TestRequest [ " + request.name() + "-" + request.id() + "]");
+
+        Keycloak keycloak = keyCloakUseCase.getKeycloakInstance();
+        RealmRepresentation realm = keyCloakUseCase.getRealm(keycloak);
+
+        System.out.println("Realm [" + realm + "]");
+
         return String.format("Hello, %s!", jwt.getClaimAsString("preferred_username"));
     }
 }

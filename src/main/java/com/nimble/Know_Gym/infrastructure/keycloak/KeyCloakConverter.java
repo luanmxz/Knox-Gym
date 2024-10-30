@@ -1,4 +1,4 @@
-package com.nimble.Know_Gym.infrastructure.config.keycloak;
+package com.nimble.Know_Gym.infrastructure.keycloak;
 
 import java.util.List;
 import java.util.Map;

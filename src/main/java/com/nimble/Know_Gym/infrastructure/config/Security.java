@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.nimble.Know_Gym.infrastructure.config.keycloak.KeyCloakConverter;
+import com.nimble.Know_Gym.infrastructure.keycloak.KeyCloakConverter;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
