@@ -4,6 +4,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.LinkedMultiValueMap;
@@ -50,5 +51,11 @@ public class AuthController {
                 String.class);
 
         return response;
+    }
+
+    @GetMapping("/protected/premium")
+    @PreAuthorize("hasAuthority ('USER_PREMIUM')")
+    public String premium(@AuthenticationPrincipal Jwt jwt) {
+        return String.format("Hello, %s!", jwt.getClaimAsString("preferred_username"));
     }
 }
