@@ -21,7 +21,6 @@ services:
         KC_HOSTNAME: ${KEYCLOAK_HOSTNAME}
         KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
         KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-        KC_HOSTNAME_PORT: 7080
         KC_HOSTNAME_STRICT_BACKCHANNEL: "true"
         KC_HEALTH_ENABLED: "true"
         KC_LOG_LEVEL: info
@@ -37,7 +36,7 @@ services:
         timeout: 2s
         retries: 15
       command:
-        [ "start-dev"]
+        [ "start-dev", "--http-port=7080", "--https-port=7443"]
       ports:
         - 7080:7080
         - 7443:7443
