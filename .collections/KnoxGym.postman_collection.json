@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "277f43a5-e54d-4997-a179-06c4fc294ede",
+		"name": "KnoxGym",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24170516",
+		"_collection_link": "https://blue-eclipse-166688.postman.co/workspace/Nimble~93a89fe1-89fd-415b-8f8b-d9000591ba3e/collection/24170516-277f43a5-e54d-4997-a179-06c4fc294ede?action=share&source=collection_link&creator=24170516"
+	},
+	"item": [
+		{
+			"name": "TOKEN FROM KEYCLOAK URL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var access_token = pm.response.json().access_token;\r",
+							"\r",
+							"if(pm.response.json() !== null){\r",
+							"    pm.environment.set(\"access_token\", access_token);\r",
+							"    console.log(\"work\");\r",
+							"} else {\r",
+							"    pm.environment.set(\"access_token\", null);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "knoxgym",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "myuser",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "teste123",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url_keycloak_realm}}protocol/openid-connect/token",
+					"host": [
+						"{{base_url_keycloak_realm}}protocol"
+					],
+					"path": [
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST ACCESS ROLE USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_auth}}",
+					"host": [
+						"{{url_auth}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET TOKEN FROM LOGIN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var access_token = pm.response.json().access_token;\r",
+							"\r",
+							"if(pm.response.json() !== null){\r",
+							"    pm.environment.set(\"access_token\", access_token);\r",
+							"    console.log(\"work\");\r",
+							"} else {\r",
+							"    pm.environment.set(\"access_token\", null);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientId\": \"knoxgym\",\r\n    \"username\": \"myuser\",\r\n    \"password\": \"teste123\",\r\n    \"grantType\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_auth}}",
+					"host": [
+						"{{url_auth}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
